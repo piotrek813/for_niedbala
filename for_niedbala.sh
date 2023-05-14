@@ -22,28 +22,27 @@ declare -a arr=("Jakub Baran"
 "Małgorzata Stypa"
 "Paweł Gontowski")
 
-declare path=$(realpath $1)
-echo $path
+path=$(realpath "$1")
 rm -rf for_niedbala
 mkdir for_niedbala
-cd for_niedbala
+cd for_niedbala || exit
 mkdir finished
-unzip $path -d tmp
-cd tmp
+unzip "$path" -d tmp
+cd tmp || exit
 
 for i in "${!arr[@]}"
 do
   if [[ "$i" == 0 ]]; then
-    declare change="Jan Kowalski";
+    change="Jan Kowalski";
   else
-    declare change="${arr[$i-1]}"
+    change="${arr[$i-1]}"
   fi
 
   if [[ "${arr[$i]}" == "Paweł Gontowski" ]]; then
     sed -i 's/4PTB/4PTA/g' word/document.xml
   fi
   sed -i "s/$change/${arr[$i]}/g" word/document.xml
-  zip -r "../finished/Dzienniczek Praktyki Zawodowej ${arr[$i]} 35 dni.docx" *
+  zip -r "../finished/Dzienniczek Praktyki Zawodowej ${arr[$i]} 35 dni.docx" ./*
 done
 
 
